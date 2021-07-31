@@ -1,0 +1,31 @@
+[user]
+	name = loovjo
+	email = jonathan.loov@gmail.com
+[push]
+	default = current
+[pull]
+	ff="only"
+	rebase = true
+[merge]
+  tool = vimdiff
+[mergetool]
+  prompt = true
+  tool = vimdiff
+[mergetool "vimdiff"]
+  cmd = nvim -d "$LOCAL" "$REMOTE" "$BASE" $"MERGED" -c '$wincmd w|wincmd J|0wincmd w|f %_remote|1wincmd w|f %_base|2wincmd w|f %_merged|$wincmd'
+[diff]
+  tool = vimdiff
+[difftool]
+  prompt = true
+  tool = nvimdiff
+[difftool "vimdiff"]
+  cmd = nvim -d "$LOCAL" "$REMOTE"
+[alias]
+	d = difftool
+	s = status
+	c = commit
+	lg = log --graph --branches --all --decorate --pretty=\"%C(magenta)[%C(red)%an%C(magenta) %ad] %C(yellow)%h: %C(green)%s %C(blue)%N\" --date=short
+	lgh = log --graph --branches --all --decorate --pretty=\"%C(magenta)[%C(red)%an%C(magenta) %ad] %C(yellow)%h: %C(green)%s %C(blue)%N\" --date=short HEAD~1..master
+[core]
+	excludesfile = /Users/jonathanloov/Documents/configs/git/gitignore.global
+    editor = kak
