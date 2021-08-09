@@ -67,8 +67,7 @@ filetypes = ["haskell"]
 roots = ["Setup.hs", "stack.yaml", "*.cabal"]
 # You might also be interested in the newer, but early stage, haskell-language-server
 # https://github.com/haskell/haskell-language-server
-command = "hie-wrapper"
-args = ["--lsp"]
+command = "hls"
 
 [language.python]
 filetypes = ["python"]
@@ -80,6 +79,16 @@ offset_encoding = "utf-8"
 filetypes = ["rust"]
 roots = ["Cargo.toml"]
 command = "rust-analyzer"
+
+[language.c]
+filetypes = ["c"]
+roots = ["compile_commands.json"]
+command = "clangd"
+
+[language.cpp]
+filetypes = ["cpp"]
+roots = ["compile_commands.json"]
+command = "clangd"
 
 # [language.rust]
 # filetypes = ["rust"]
