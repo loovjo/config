@@ -242,3 +242,4 @@ hook global BufSetOption filetype=rust %{
 hook global WinSetOption filetype=python %{
     set-option window formatcmd 'black -q  -'
 }
+set-option global ui_options ncurses_assistant=cat
