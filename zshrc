@@ -155,3 +155,4 @@ function setwd {
     tmux command-prompt -I "attach -c $(pwd)"
 }
 [ -f "/Users/jonathanloov/.ghcup/env" ] && source "/Users/jonathanloov/.ghcup/env" # ghcup-env
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
