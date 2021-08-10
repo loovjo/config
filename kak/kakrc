@@ -23,8 +23,7 @@ plug "ul/kak-lsp" do %{
 }
 
 
-set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak/kak-lsp.toml"
-set global lsp_cmd "%opt{lsp_cmd} -vvv --log /tmp/kak-lsp.log"
+set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak/kak-lsp.toml -vvv --log /tmp/kak-log.log"
 
 
 plug "ul/kak-tree" do %{
@@ -163,12 +162,22 @@ map global normal '<c-v>' '!pbpaste<ret>'
 
 ## LSP stuff
 
+map global normal 'Å' ':lsp-enable<ret>' -docstring 'Enable LSP'
+map global normal 'å' ':enter-user-mode lsp<ret>' -docstring 'LSP mode'
 # map global user 'l' ':enter-user-mode lsp<ret>' -docstring 'LSP mode'
-# map global lsp 'l' ':lsp-enable-window<ret>' -docstring 'Enable LSP'
-# map global user 'L' ':lsp-enable-window<ret>' -docstring 'Enable LSP'
-map global normal 'å' ':enter-user-mode lsp<ret>'
-map global normal 'Å' ':lsp-enable-window<ret>'
+# map global lsp 'l' ':lsp-enable<ret>' -docstring 'Enable LSP'
+# map global user 'L' ':lsp-enable<ret>' -docstring 'Enable LSP'
+map global user 'l' ':echo bråin damage<ret>' -docstring 'LSP mode'
+map global lsp 'l' ':echo bråin damage<ret>' -docstring 'Enable LSP'
+map global user 'L' ':echo bråin damage<ret>' -docstring 'Enable LSP'
 map global lsp 'R' ':lsp-rename-prompt<ret>' -docstring 'Rename symbol'
+
+define-command lsp-clear-references %{
+    set-option window lsp_references # empty
+}
+map global lsp '"' ':lsp-clear-references<ret>'
+face global Reference white,rgb:550055
+face global ReferenceBind white,rgb:552200
 
 map global insert '<c-s>' '<a-;>:enter-user-mode lsp<ret>s'
 
@@ -233,13 +242,8 @@ source ~/.config/kak/custom-highlighting/bfpp.kak
 
 hook global BufSetOption filetype=rust %{
     set-option buffer formatcmd 'rustfmt'
-
-    hook buffer -group rust-inlay-hints BufReload .* rust-analyzer-inlay-hints
-    hook buffer -group rust-inlay-hints NormalIdle .* rust-analyzer-inlay-hints
-    # hook window -group rust-inlay-hints InsertIdle .* rust-analyzer-inlay-hints
 }
 
 hook global WinSetOption filetype=python %{
     set-option window formatcmd 'black -q  -'
 }
-set-option global ui_options ncurses_assistant=cat
