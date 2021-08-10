@@ -23,8 +23,8 @@ plug "ul/kak-lsp" do %{
 }
 
 
-set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak/kak-lsp.toml -vvv --log /tmp/kak-log.log"
-
+set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak/kak-lsp.toml"
+set global lsp_cmd "%opt{lsp_cmd} -vvv --log /tmp/kak-lsp.log"
 
 plug "ul/kak-tree" do %{
     cargo install --locked --force --path . --features "c cpp css haskell html javascript json python rust"
@@ -242,8 +242,13 @@ source ~/.config/kak/custom-highlighting/bfpp.kak
 
 hook global BufSetOption filetype=rust %{
     set-option buffer formatcmd 'rustfmt'
+
+    hook buffer -group rust-inlay-hints BufReload .* rust-analyzer-inlay-hints
+    hook buffer -group rust-inlay-hints NormalIdle .* rust-analyzer-inlay-hints
+    # hook window -group rust-inlay-hints InsertIdle .* rust-analyzer-inlay-hints
 }
 
 hook global WinSetOption filetype=python %{
     set-option window formatcmd 'black -q  -'
 }
+set-option global ui_options ncurses_assistant=cat
