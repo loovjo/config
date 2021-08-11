@@ -175,7 +175,8 @@ map global lsp 'R' ':lsp-rename-prompt<ret>' -docstring 'Rename symbol'
 define-command lsp-clear-references %{
     set-option window lsp_references # empty
 }
-map global lsp '"' ':lsp-clear-references<ret>'
+map global lsp '"' ':lsp-clear-references<ret>' -docstring "Clear references"
+
 face global Reference white,rgb:550055
 face global ReferenceBind white,rgb:552200
 
