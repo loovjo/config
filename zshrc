@@ -17,8 +17,8 @@ export PATH="/Applications/ARM/bin:$PATH"
 
 alias lsa="ls -Ga"
 alias ls="ls -G"
-alias bashcols="python ~/Documents/Projekt/Programmering/Python/BashCols.py"
-alias bashcurmov="python ~/Documents/Projekt/Programmering/Python/Bashcurmoves.py"
+alias bashcols="python3 ~/Documents/Projekt/Programmering/Python/BashCols.py"
+alias bashcurmov="python3 ~/Documents/Projekt/Programmering/Python/Bashcurmoves.py"
 alias objdump="objdump -x86-asm-syntax=intel"
 alias atsc="patscc -cleanaft -DATS_MEMALLOC_LIBC"
 alias i2="idris2"
@@ -90,10 +90,17 @@ export PATH="$HOME/Documents/Commands/:$PATH"
 
 setopt prompt_subst
 
+# Powerline symbols: 
 export PROMPT='$(
-    echo -en "%{\033[4m\033[38;5;0m\033[48;5;172m%} [";
+    echo -en "%{\033[0m\033[38;5;0m\033[48;5;172m%} [";
     ~/Documents/Projekt/Programmering/Rust/unambig-path/target/release/unambig-path
-    echo -en "] %T %{\033[0m\033[38:5:172m%}%{\033[0m%} ";
+    echo -en "] %T ";
+    if [ "$CONDA_DEFAULT_ENV" != "base" ] ; then
+        echo -en "%{\033[0m\033[38;5;172m\033[48;5;28m%}%{\033[0m\033[38;5;0m\033[48;5;28m%} 🐍 $CONDA_DEFAULT_ENV %{\033[0m\033[38:5:28m%}";
+    else
+        echo -en "%{\033[0m\033[38:5:172m%}"
+    fi
+    echo -en "%{\033[0m%} ";
 )'
 
 export RPROMPT='%(?.%F{green}√.%?%F{red}?)%f'
@@ -156,3 +163,26 @@ function setwd {
 }
 [ -f "/Users/jonathanloov/.ghcup/env" ] && source "/Users/jonathanloov/.ghcup/env" # ghcup-env
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+
+export PATH="/Applications/Racket v8.2/bin:$PATH"
+export C_INCLUDE_PATH="/Applications/Racket v8.2/include:$C_INCLUDE_PATH"
+export C_INCLUDE_PATH="/opt/homebrew/Cellar/gmp/6.2.1/include/:$C_INCLUDE_PATH"
+export LD_LIBRARY_PATH="/Applications/Racket v8.2/lib:$LD_LIBRARY_PATH"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/jonathanloov/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/jonathanloov/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/Users/jonathanloov/miniforge3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/jonathanloov/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+export PATH="/opt/homebrew/opt/bison/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/bison/lib"
