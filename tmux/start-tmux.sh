@@ -5,6 +5,7 @@ SESSIONS=$(/opt/homebrew/bin/tmux ls)
 SESSIONS="$SESSIONS
 Connect to coral.shoes (tmux)
 Connect to coral.shoes (raw)
+Edit Notes/scratch.org
 New session
 Raw shell"
 
@@ -16,6 +17,9 @@ case $CHOICE in
         ;;
     "Connect to coral.shoes (raw)")
         /opt/homebrew/bin/mosh --ssh="ssh -p 44" web@coral.shoes
+        ;;
+    "Edit Notes/scratch.org")
+        /bin/zsh -ic 'cd ~ ; kak ~/Documents/Notes/scratch.org'
         ;;
     "Raw shell")
         /bin/zsh
