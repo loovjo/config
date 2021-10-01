@@ -92,6 +92,8 @@ map global insert '<s-down>' '<a-;>J'
 map global normal '<c-e>' 'vj'
 map global normal '<c-y>' 'vk'
 
+map global normal '<ret>' ':'
+
 ## Prompt maps for regex
 
 map global prompt '<a-b>' '\b'
