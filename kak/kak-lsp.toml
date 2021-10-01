@@ -90,6 +90,11 @@ filetypes = ["cpp"]
 roots = ["compile_commands.json"]
 command = "clangd"
 
+[language.idris]
+filetypes = ["idris"]
+roots = ["*.ipkg"]
+command = "idris2-lsp-log"
+
 # [language.rust]
 # filetypes = ["rust"]
 # roots = ["Cargo.toml"]
