@@ -1,0 +1,14 @@
+path=${1-$(pwd)}
+path=$(realpath $path)
+path="/tmp/sync/${path#/Users/jonathanloov/}"
+
+echo "setting up paths"
+ssh coral@hem.60.nu "mkdir -p '$path'"
+
+tmux_pane_id_path=$(mktemp)
+
+pane_id=$(tmux splitw -P -F "#{pane_id}" -d -l 7 "rsync -avz $PWD coral@hem.60.nu:$path; fswatch -0o . | xargs -0 -n1 -I{} rsync -avz $PWD coral@hem.60.nu:$path")
+
+mosh coral@hem.60.nu -- sh -c "cd $path ; zsh -i"
+
+tmux kill-pane -t "$pane_id"
