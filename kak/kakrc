@@ -168,6 +168,8 @@ face global MatchingChar ,rgb:665c54+bF
 source ~/.config/kak/custom-highlighting/ats.kak
 source ~/.config/kak/custom-highlighting/unison.kak
 source ~/.config/kak/custom-highlighting/bfpp.kak
+source ~/.config/kak/custom-highlighting/j.kak
+source ~/.config/kak/custom-highlighting/bqn.kak
 
 ## Filetype formatting
 
