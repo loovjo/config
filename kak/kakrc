@@ -39,16 +39,27 @@ plug 'stoand/kakoune-idris'
 
 ### Configs
 
+# colorscheme solarized-dark
+colorscheme gruvbox-dark
+
 ## Long lines highlighting
-add-highlighter global/ number-lines -relative
+add-highlighter global/ number-lines -relative -hlcursor
 
 # add-highlighter global/ regex '^[^\n]{100}([^\n]+)$' 1:black,rgb:880000
 add-highlighter global/ regex '^.*[^ ]( +)$' 1:black,red
 
 hook global WinSetOption .* %{
     remove-highlighter global/show-ws
-    add-highlighter global/show-ws show-whitespaces
-    face global Whitespace black
+    add-highlighter global/show-ws show-whitespaces -tabpad ' '
+
+    face global Whitespace rgb:3c3836+f
+    face global comment rgb:665c54+f
+
+
+    # face global SecondaryCursor    black,rgb:6fdce8+F
+    # face global SecondarySelection white,rgb:064f57+F
+
+    # face global PrimarySelection white,rgb:590987+F
 }
 
 add-highlighter global/ show-matching
@@ -97,7 +108,7 @@ map global insert '<s-down>' '<a-;>J'
 map global normal '<c-e>' 'vj'
 map global normal '<c-y>' 'vk'
 
-map global normal '<ret>' ':'
+# map global normal '<ret>' ':'
 
 ## Prompt maps for regex
 
@@ -196,21 +207,19 @@ alias global g goto-line
 
 define-command W w
 
+## View
+map global view 'f' '<esc>:focus-toggle<ret>' -docstring "Toggle focus mode"
+map global view 'F' '<esc>:focus-clear<ret>' -docstring "Disable focus mode"
 
 ## Colors
 
 
-face global SecondaryCursor    black,rgb:6fdce8
-face global SecondarySelection white,rgb:064f57
-
-face global PrimarySelection white,rgb:590987
-
 define-command update-cursor-style %{
     evaluate-commands %sh{
         if [ $(echo "$kak_selection" | wc -c) -eq 2 ] ; then
-            echo 'face buffer PrimaryCursor white,+ui'
+            echo 'face buffer PrimaryCursor white,+uiF'
         else
-            echo 'face buffer PrimaryCursor white,rgb:b05fde+ui'
+            echo 'face buffer PrimaryCursor white,rgb:b05fde+uiF'
         fi
     }
 }
@@ -242,6 +251,8 @@ face global MenuBackground rgb:eecc44+i
 face global MenuForeground blue+bi
 face global Information rgb:44ccee+b
 
+face global MatchingChar rgb:44ccee
+
 source ~/.config/kak/custom-highlighting/ats.kak
 source ~/.config/kak/custom-highlighting/unison.kak
 source ~/.config/kak/custom-highlighting/bfpp.kak
@@ -259,4 +270,5 @@ hook global BufSetOption filetype=rust %{
 hook global WinSetOption filetype=python %{
     set-option window formatcmd 'black -q  -'
 }
-set-option global ui_options ncurses_assistant=cat
+set-option global ui_options terminal_assistant=cat
+
