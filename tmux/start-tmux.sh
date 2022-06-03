@@ -22,11 +22,11 @@ case $CHOICE in
         /bin/zsh -ic 'cd ~ ; kak ~/Documents/Notes/scratch.org'
         ;;
     "Raw shell")
-        /bin/zsh
+        /opt/homebrew/bin/nu
         ;;
     "New session")
         printf "Name? " ; read NAME
-        /opt/homebrew/bin/tmux new -s "$NAME" arch -arm64 zsh
+        /opt/homebrew/bin/tmux new -s "$NAME" arch -arm64 /opt/homebrew/bin/nu
         ;;
     *)
         /opt/homebrew/bin/tmux attach-session -t "$CHOICE"
