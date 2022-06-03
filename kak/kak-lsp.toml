@@ -93,7 +93,12 @@ command = "clangd"
 [language.idris]
 filetypes = ["idris"]
 roots = ["*.ipkg"]
-command = "idris2-lsp-log"
+command = "idris2-lsp"
+
+[language.zig]
+filetypes = ["zig"]
+roots = ["build.zig"]
+command = "zls"
 
 # [language.rust]
 # filetypes = ["rust"]
