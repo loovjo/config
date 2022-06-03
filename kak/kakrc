@@ -12,21 +12,9 @@ plug "loovjo/quick-highlight"
 plug "Delapouite/kakoune-mirror"
 plug "caksoylar/kakoune-focus"
 
-# plug "andreyorst/powerline.kak" config %{
-#     powerline-start
-# }
-# hook global WinCreate ".*" %{
-#     powerline-theme red-phoenix
-# }
-
-# slow!
-# plug "kak-lsp/kak-lsp" do %{
-#     cargo install --locked --force --path .
-# }
 plug "krobelus/kak-lsp" branch "lightbulbs-for-code-actions" do %{
     cargo install --locked --force --path .
 }
-
 
 set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak/kak-lsp.toml"
 set global lsp_cmd "%opt{lsp_cmd} -vvv --log /tmp/kak-lsp.log"
@@ -42,11 +30,10 @@ plug 'stoand/kakoune-idris'
 # colorscheme solarized-dark
 colorscheme gruvbox-dark
 
-## Long lines highlighting
+# highlight whitespace at end of line
+add-highlighter global/ regex '^.*[^ ]( +)$' 1:black,red
 add-highlighter global/ number-lines -relative -hlcursor
 
-# add-highlighter global/ regex '^[^\n]{100}([^\n]+)$' 1:black,rgb:880000
-add-highlighter global/ regex '^.*[^ ]( +)$' 1:black,red
 
 hook global WinSetOption .* %{
     remove-highlighter global/show-ws
@@ -54,87 +41,55 @@ hook global WinSetOption .* %{
 
     face global Whitespace rgb:3c3836+f
     face global comment rgb:665c54+f
-
-
-    # face global SecondaryCursor    black,rgb:6fdce8+F
-    # face global SecondarySelection white,rgb:064f57+F
-
-    # face global PrimarySelection white,rgb:590987+F
 }
 
 add-highlighter global/ show-matching
-face global MatchingChar bold
-
-# set-option global autowrap_column 100
-
-# hook global InsertBegin .* autowrap-enable
-
 hook global BufCreate .* %{
     expandtab
 }
 
 set global tabstop 4
 
-define-command join %{
-    prompt 'join on: ' %{
-        execute-keys "<a-p><a-space>a%val{text}<esc>;"
-    }
-}
-
-map global user 'j' ':join<ret>' -docstring ':join'
+## == keybinds ==
 
 map global normal '=' ':format-buffer<ret>'
-
-## Quick keybinds
 
 # tabs
 map global insert '<tab>' '<a-;><a-gt>'
 map global insert '<s-tab>' '<a-;><a-lt>'
 
+define-command W w
+
+
+# emulate alt-keybinds with "ä"
+# dosen't work that well :(
 source "~/Documents/configs/kak/alt-proxy.kak"
 
-map global insert '<c-a>' '<esc>i'
-map global insert '<c-e>' '<esc>a'
+# Commenting
+map global normal '#' ':comment-line<ret>'
+map global user '#' ':comment-block<ret>' -docstring 'Block comment'
 
-map global insert '<c-o>' '<a-;>'
-map global insert '<c-u>' '<esc>'
-map global insert '<c-b>' '<a-;>:enter-user-mode buffers<ret>'
+# Clipboard commands
+map global normal '<a-y>' '|pbcopy<ret>u:echo "Copied text to clipboard"<ret>'
+map global alt-proxy 'y' '|pbcopy<ret>u:echo "Copied text to clipboard"<ret>'
+map global normal '<c-v>' '!pbpaste<ret>'
 
-map global insert '<s-left>' '<a-;>H'
-map global insert '<s-right>' '<a-;>L'
-map global insert '<s-up>' '<a-;>K'
-map global insert '<s-down>' '<a-;>J'
-
-map global normal '<c-e>' 'vj'
-map global normal '<c-y>' 'vk'
-
-# map global normal '<ret>' ':'
-
-## Prompt maps for regex
-
-map global prompt '<a-b>' '\b'
-map global prompt '<a-w>' '\w'
-map global prompt '<a-d>' '\d'
-map global prompt '<a-s>' '\s'
-map global prompt '<a-n>' '\n'
-map global prompt '<a-q>' '\Q'
-
-map global prompt '<a-B>' '\B'
-map global prompt '<a-W>' '\W'
-map global prompt '<a-D>' '\D'
-map global prompt '<a-S>' '\S'
-
-## Buffer user mode
-
+# Buffer user mode
 map global user 'b' ':enter-user-mode buffers<ret>' -docstring 'buffer mode'
 map global user 'B' ':enter-user-mode -lock buffers<ret>' -docstring 'buffer mode (lock)'
 
-## Idris user mode
 
+## == plugin configuration ==
+
+## View
+map global view 'f' '<esc>:focus-toggle<ret>vv' -docstring "Toggle focus mode"
+map global view 'F' '<esc>:focus-clear<ret>' -docstring "Disable focus mode"
+
+# Idris user mode
 map global user 'i' ':enter-user-mode idris-ide<ret>' -docstring 'idris mode'
 map global user 'I' ':enter-user-mode -lock idris-ide<ret>' -docstring 'idris mode (lock)'
 
-## Custom function surround
+# Custom function surround
 define-command -hidden surround-function %{
     prompt 'function: ' %{
         execute-keys "<a-:><a-;>Z;ha%val{text}(<esc><a-;>L<a-z>ua)<esc>"
@@ -162,32 +117,10 @@ map global mirror 'i' ':surround-ins<ret>' -docstring 'function'
 
 map global normal ö ':enter-user-mode mirror<ret>' -docstring 'mirror mode'
 map global normal Ö ':enter-user-mode -lock mirror<ret>' -docstring 'mirror mode (lock)'
-map global user "'" ':enter-user-mode surround<ret>'
 
-
-## Commenting
-map global normal '#' ':comment-line<ret>'
-map global user '#' ':comment-block<ret>' -docstring 'Block comment'
-
-## Search for token
-map global normal '<a-S>' 's\b\b<left><left>'
-map global alt-proxy 'S' 's\b\b<left><left>'
-
-## Clipboard commands
-map global normal '<a-y>' '|pbcopy<ret>u:echo "Copied text to clipboard"<ret>'
-map global alt-proxy 'y' '|pbcopy<ret>u:echo "Copied text to clipboard"<ret>'
-map global normal '<c-v>' '!pbpaste<ret>'
-
-## LSP stuff
-
+# LSP stuff
 map global normal 'Å' ':lsp-enable<ret>' -docstring 'Enable LSP'
 map global normal 'å' ':enter-user-mode lsp<ret>' -docstring 'LSP mode'
-# map global user 'l' ':enter-user-mode lsp<ret>' -docstring 'LSP mode'
-# map global lsp 'l' ':lsp-enable<ret>' -docstring 'Enable LSP'
-# map global user 'L' ':lsp-enable<ret>' -docstring 'Enable LSP'
-map global user 'l' ':echo bråin damage<ret>' -docstring 'LSP mode'
-map global lsp 'l' ':echo bråin damage<ret>' -docstring 'Enable LSP'
-map global user 'L' ':echo bråin damage<ret>' -docstring 'Enable LSP'
 map global lsp 'R' ':lsp-rename-prompt<ret>' -docstring 'Rename symbol'
 
 define-command lsp-clear-references %{
@@ -200,19 +133,7 @@ face global ReferenceBind white,rgb:552200
 
 map global insert '<c-s>' '<a-;>:enter-user-mode lsp<ret>s'
 
-define-command -params 0 wrap %{exec '<a-x>H|tw 100<ret>'}
-
-define-command -params 1 goto-line %{select "%arg{1}.1,%arg{1}.1"}
-alias global g goto-line
-
-define-command W w
-
-## View
-map global view 'f' '<esc>:focus-toggle<ret>' -docstring "Toggle focus mode"
-map global view 'F' '<esc>:focus-clear<ret>' -docstring "Disable focus mode"
-
-## Colors
-
+## == Colors ==
 
 define-command update-cursor-style %{
     evaluate-commands %sh{
@@ -235,15 +156,6 @@ hook global WinCreate .* %{
 face global PrimaryCursorEol PrimaryCursor
 face global SecondaryCursorEol SecondaryCursor
 
-# face global PrimaryCursor      black,rgb:fcd267+ui
-# face global PrimaryCursorEol   black,rgb:fcd267+ui
-# face global SecondaryCursor    black,rgb:d8aa61
-# face global SecondaryCursorEol black,rgb:d8aa61
-
-# face global PrimarySelection   black,rgb:ffb700+i
-# face global SecondarySelection black,rgb:ad9761
-
-
 face global operator blue
 face global type rgb:aa66ee+b
 
@@ -251,7 +163,7 @@ face global MenuBackground rgb:eecc44+i
 face global MenuForeground blue+bi
 face global Information rgb:44ccee+b
 
-face global MatchingChar rgb:44ccee
+face global MatchingChar ,rgb:665c54+bF
 
 source ~/.config/kak/custom-highlighting/ats.kak
 source ~/.config/kak/custom-highlighting/unison.kak
@@ -264,11 +176,11 @@ hook global BufSetOption filetype=rust %{
 
     hook buffer -group rust-inlay-hints BufReload .* rust-analyzer-inlay-hints
     hook buffer -group rust-inlay-hints NormalIdle .* rust-analyzer-inlay-hints
-    # hook window -group rust-inlay-hints InsertIdle .* rust-analyzer-inlay-hints
 }
 
 hook global WinSetOption filetype=python %{
     set-option window formatcmd 'black -q  -'
 }
-set-option global ui_options terminal_assistant=cat
+
+set-option global ui_options terminal_assistant=cat # 😺
 
