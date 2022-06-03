@@ -8,7 +8,9 @@ plug 'delapouite/kakoune-buffers'
 plug 'kakoune-editor/kakoune-extra-filetypes' # slow!
 plug "andreyorst/smarttab.kak"
 plug "loovjo/ad-hoc-org-mode"
+plug "loovjo/quick-highlight"
 plug "Delapouite/kakoune-mirror"
+plug "caksoylar/kakoune-focus"
 
 # plug "andreyorst/powerline.kak" config %{
 #     powerline-start
@@ -18,7 +20,10 @@ plug "Delapouite/kakoune-mirror"
 # }
 
 # slow!
-plug "ul/kak-lsp" do %{
+# plug "kak-lsp/kak-lsp" do %{
+#     cargo install --locked --force --path .
+# }
+plug "krobelus/kak-lsp" branch "lightbulbs-for-code-actions" do %{
     cargo install --locked --force --path .
 }
 
