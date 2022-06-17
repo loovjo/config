@@ -12,7 +12,7 @@ plug "loovjo/quick-highlight"
 plug "Delapouite/kakoune-mirror"
 plug "caksoylar/kakoune-focus"
 
-plug "krobelus/kak-lsp" branch "lightbulbs-for-code-actions" do %{
+plug "kak-lsp/kak-lsp" do %{
     cargo install --locked --force --path .
 }
 
@@ -81,6 +81,25 @@ map global normal '<c-v>' '!pbpaste<ret>'
 map global user 'b' ':enter-user-mode buffers<ret>' -docstring 'buffer mode'
 map global user 'B' ':enter-user-mode -lock buffers<ret>' -docstring 'buffer mode (lock)'
 
+# command to copy <filename>:<line> into the clipboard (useful for pasting into debugger)
+define-command copy-location -docstring "Copies <filename>:<line> for the current cursor into the clipboard" %{
+    evaluate-commands %sh{
+        set -e
+        printf "%s" "$kak_bufname:$kak_cursor_line" | pbcopy
+        echo "echo 'Copied $kak_bufname:$kak_cursor_line into clipboard'"
+    }
+}
+
+define-command copy-location-path -docstring "Copies <full path>:<line> for the current cursor into the clipboard" %{
+    evaluate-commands %sh{
+        set -e
+        printf "%s" "$kak_buffile:$kak_cursor_line" | pbcopy
+        echo "echo 'Copied $kak_buffile:$kak_cursor_line into clipboard'"
+    }
+}
+
+map global user 'y' ':copy-location<ret>' -docstring "Copy location"
+map global user 'Y' ':copy-location-path<ret>' -docstring "Copy location (full path)"
 
 ## == plugin configuration ==
 
@@ -191,4 +210,5 @@ hook global WinSetOption filetype=python %{
 }
 
 set-option global ui_options terminal_assistant=cat # 😺
+set-option global ignored_files "^(\..*|.*\.(o|so|a)|__pycache__)$"
 
