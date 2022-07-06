@@ -54,6 +54,9 @@ set global tabstop 4
 
 map global normal '=' ':format-buffer<ret>'
 
+map global normal 'J' "Jx"
+map global normal 'K' "Kx"
+
 # tabs
 map global insert '<tab>' '<a-;><a-gt>'
 map global insert '<s-tab>' '<a-;><a-lt>'
@@ -102,7 +105,7 @@ define-command -hidden surround-tag %{
 }
 define-command -hidden surround-Tag %{
     prompt 'tag: ' %{
-        execute-keys "<a-x>Z<a-:><a-;>gih<a-h>yz<gt><a-x>ZO<c-r>""<lt>%val{text}<gt><esc>zo<c-r>""<lt>%val{text}<gt><esc>z"
+        execute-keys "xZ<a-:><a-;>gih<a-h>yz<gt>xZO<c-r>""<lt>%val{text}<gt><esc>zo<c-r>""<lt>%val{text}<gt><esc>z"
     }
 }
 define-command -hidden surround-ins %{
