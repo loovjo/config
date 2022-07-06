@@ -13,17 +13,20 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:$HOME/Sage"
 export PATH="/Applications/j901/bin:$PATH"
 export PATH="$HOME/Documents/SelfCompile/binary-links:$PATH"
+export PATH="$HOME/selfcompile-big/binary-links:$PATH"
 export PATH="/Applications/ARM/bin:$PATH"
 
 alias lsa="ls -Ga"
 alias ls="ls -G"
 alias bashcols="python3 ~/Documents/Projekt/Programmering/Python/BashCols.py"
 alias bashcurmov="python3 ~/Documents/Projekt/Programmering/Python/Bashcurmoves.py"
-alias objdump="objdump -x86-asm-syntax=intel"
+alias objdump="objdump -M intel"
 alias atsc="patscc -cleanaft -DATS_MEMALLOC_LIBC"
 alias i2="idris2"
 alias py="python"
 alias ipy="ipython"
+alias c="cargo"
+alias bqn="rlwrap BQN"
 
 _BLUE="\033[38;5;4m"
 _GREEN="\033[38;5;2m"
@@ -113,29 +116,14 @@ SAVEHIST=10000000
 setopt appendhistory
 setopt incappendhistory
 setopt sharehistory
-# Spara inte felaktiga kommandon
-zshaddhistory() { whence ${${(z)1}[1]} >| /dev/null || return 1 }
 
 # Right cmd -> shift
 # Right shift -> Alt
 # Right alt -> cmd
 # Key value or'd with 0x700000000
 # https://developer.apple.com/library/archive/technotes/tn2450/_index.html
-hidutil property --set '{"UserKeyMapping":
-[
-    {
-        "HIDKeyboardModifierMappingSrc":0x7000000e7,
-        "HIDKeyboardModifierMappingDst":0x7000000e1,
-    }, {
-        "HIDKeyboardModifierMappingSrc":0x7000000e5,
-        "HIDKeyboardModifierMappingDst":0x7000000e6,
-    }, {
-        "HIDKeyboardModifierMappingSrc":0x7000000e6,
-        "HIDKeyboardModifierMappingDst":0x7000000e3,
-    }
-]
-}' 1>/dev/null
 
+source "$HOME/Documents/Keyboard layouts/keybind.sh"
 
 # Setup pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -152,7 +140,7 @@ export PATH="/Users/jonathanloov/.local/bin:$PATH"
 
 # OpenJDK 1.8
 export JAVA_HOME=$(/usr/libexec/java_home -v 11.0.11)
-export PATH="/usr/local/opt/binutils/bin:$PATH"
+# export PATH="/usr/local/opt/binutils/bin:$PATH"
 
 source /Users/jonathanloov/.config/broot/launcher/bash/br
 
@@ -161,13 +149,18 @@ source /Users/jonathanloov/.config/broot/launcher/bash/br
 function setwd {
     tmux command-prompt -I "attach -c $(pwd)"
 }
+
+export PATH="/Users/jonathanloov/Documents/configs/tmux/:$PATH"
+
 [ -f "/Users/jonathanloov/.ghcup/env" ] && source "/Users/jonathanloov/.ghcup/env" # ghcup-env
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
 export PATH="/Applications/Racket v8.2/bin:$PATH"
 export C_INCLUDE_PATH="/Applications/Racket v8.2/include:$C_INCLUDE_PATH"
-export C_INCLUDE_PATH="/opt/homebrew/Cellar/gmp/6.2.1/include/:$C_INCLUDE_PATH"
 export LD_LIBRARY_PATH="/Applications/Racket v8.2/lib:$LD_LIBRARY_PATH"
+
+export C_INCLUDE_PATH="/opt/homebrew/include/:$C_INCLUDE_PATH"
+export LD_LIBRARY_PATH="/opt/homebrew/lib:$LD_LIBRARY_PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -186,3 +179,5 @@ unset __conda_setup
 
 export PATH="/opt/homebrew/opt/bison/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/bison/lib"
+
+[ -f "/Users/jonathanloov/.ghcup/env" ] && source "/Users/jonathanloov/.ghcup/env" # ghcup-env

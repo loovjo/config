@@ -29,3 +29,5 @@
 [core]
 	excludesfile = /Users/jonathanloov/Documents/configs/git/gitignore.global
     editor = kak
+[init]
+	defaultBranch = main
