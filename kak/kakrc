@@ -133,6 +133,9 @@ face global ReferenceBind white,rgb:552200
 
 map global insert '<c-s>' '<a-;>:enter-user-mode lsp<ret>s'
 
+map global user '&' ':qhl-word<ret>' -docstring "Highlight current word"
+map global user '"' ':unqhl<ret>' -docstring "Remove highlight"
+
 ## == Colors ==
 
 define-command update-cursor-style %{
