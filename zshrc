@@ -1,6 +1,10 @@
 #!/bin/zsh
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [ -d /opt/homebrew ] ; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+else
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
 
 export LC_ALL=en_US.UTF-8
 export TERM=xterm-256color
@@ -96,7 +100,11 @@ setopt prompt_subst
 # Powerline symbols: 
 export PROMPT='$(
     echo -en "%{\033[0m\033[38;5;0m\033[48;5;172m%} [";
-    ~/Documents/Projekt/Programmering/Rust/unambig-path/target/release/unambig-path
+    if [ -f ~/Documents/Projekt/Programmering/Rust/unambig-path/target/release/unambig-path ] ; then
+        ~/Documents/Projekt/Programmering/Rust/unambig-path/target/release/unambig-path
+    else
+        pwd | tr -d "\n"
+    fi
     echo -en "] %T ";
     if [ "$CONDA_DEFAULT_ENV" != "base" ] ; then
         echo -en "%{\033[0m\033[38;5;172m\033[48;5;28m%}%{\033[0m\033[38;5;0m\033[48;5;28m%} 🐍 $CONDA_DEFAULT_ENV %{\033[0m\033[38:5:28m%}";
@@ -142,7 +150,7 @@ export PATH="/Users/jonathanloov/.local/bin:$PATH"
 export JAVA_HOME=$(/usr/libexec/java_home -v 11.0.11)
 # export PATH="/usr/local/opt/binutils/bin:$PATH"
 
-source /Users/jonathanloov/.config/broot/launcher/bash/br
+# source /Users/jonathanloov/.config/broot/launcher/bash/br
 
 # tmux stuff
 
@@ -181,3 +189,4 @@ export PATH="/opt/homebrew/opt/bison/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/bison/lib"
 
 [ -f "/Users/jonathanloov/.ghcup/env" ] && source "/Users/jonathanloov/.ghcup/env" # ghcup-env
+source ~/.zshrc.local
