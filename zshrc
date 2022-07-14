@@ -131,7 +131,7 @@ setopt sharehistory
 # Key value or'd with 0x700000000
 # https://developer.apple.com/library/archive/technotes/tn2450/_index.html
 
-source "$HOME/Documents/Keyboard layouts/keybind.sh"
+source "$HOME/Documents/kblayouts/keybind.sh"
 
 # Setup pyenv
 export PYENV_ROOT="$HOME/.pyenv"
